@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fullscreen Video</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent scrollbars for fullscreen */
+        background-color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      video {
+        max-width: 90%;
+        max-height: 90%;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Fullscreen style */
+      .fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        object-fit: cover; /* Ensures video scales proportionally */
+        background: #000; /* Fallback for letterboxing */
+      }
+
+      .close-button {
+        display: none;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 1rem;
+        z-index: 1100;
+      }
+
+      .close-button.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <video
+      id="video"
+      src="https://www.w3schools.com/html/mov_bbb.mp4"
+      controls
+    ></video>
+    <button id="closeButton" class="close-button">Close</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("video");
+        const closeButton = document.getElementById("closeButton");
+
+        // Toggle fullscreen mode
+        function toggleFullscreen() {
+          const isFullscreen = video.classList.contains("fullscreen");
+
+          if (isFullscreen) {
+            video.classList.remove("fullscreen");
+            closeButton.classList.remove("visible");
+            document.body.style.overflow = ""; // Restore scrolling
+          } else {
+            video.classList.add("fullscreen");
+            closeButton.classList.add("visible");
+            document.body.style.overflow = "hidden"; // Prevent scrolling
+          }
+        }
+
+        // Exit fullscreen
+        function exitFullscreen() {
+          video.classList.remove("fullscreen");
+          closeButton.classList.remove("visible");
+          document.body.style.overflow = ""; // Restore scrolling
+        }
+
+        // Event listeners
+        video.addEventListener("click", toggleFullscreen);
+        closeButton.addEventListener("click", exitFullscreen);
+
+        // Optional: Exit fullscreen on Escape key
+        document.addEventListener("keydown", (event) => {
+          if (
+            event.key === "Escape" &&
+            video.classList.contains("fullscreen")
+          ) {
+            exitFullscreen();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
